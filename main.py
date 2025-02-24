@@ -1,9 +1,20 @@
+from stats import word_count, character_count
+import sys
+
+def get_book_text(filepath_of_book: str) -> str:
+    with open(filepath_of_book) as f:
+        book_contents = f.read()
+    return book_contents
+
 def main():
-    path_to_file = "books/frankenstein.txt"
-    words = words_list(path_to_file)
-    total_words = word_count(words)
-    character_count_dictionary = character_count(words)
-    print(f"--- Begin report of {path_to_file} ---")
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    book = sys.argv[1]
+    book_contents = get_book_text(book)
+    total_words = word_count(book_contents)
+    character_count_dictionary = character_count(book_contents)
+    print(f"--- Begin report of {book} ---")
     print()
     print(f"{total_words} words found in the document")
     print()
@@ -12,27 +23,5 @@ def main():
             print(f"The '{c}' character was found {character_count_dictionary[c]} times")
     print()
     print("--- End report ---")
-
-
-def words_list(text_file):
-    file_contents = ""
-    with open(text_file) as f:
-        file_contents = f.read()
-    return file_contents
-
-def word_count(words):
-    return len(words.split())
-
-def character_count(words):
-    characters_counted = {}
-    character = ""
-    for c in words:
-        character = c.lower()
-        if character not in characters_counted:
-            characters_counted[character] = 1
-        else:
-            characters_counted[character] += 1
-    return characters_counted
-
 
 main()
